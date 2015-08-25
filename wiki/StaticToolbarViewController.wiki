@@ -1,0 +1,56 @@
+#summary StaticToolbarViewController documentation.
+
+=== Intent ===
+
+To extend UIViewController to handle the behavior of the toolbar between navigation view controllers.
+
+Every time a UIViewController is pushed or pulled the toolbar goes with it. When navigating a hierarchy we should keep the toolbar in place (it shouldn't slide with the rest of the view controller), as seen on Safari. When a user drills thru the bookmark's folders, the toolbar remains still.
+
+This class helps keeping the toolbar that way.
+
+=== Files involved ===
+
+All under:
+[http://code.google.com/p/ziptk/source/browse/#svn/trunk/src/StandardNavigationControllers/StaticToolbarViewController src/StandardNavigationControllers/StaticToolbarViewController]
+
+ * !StaticToolbarViewController.h
+ * !StaticToolbarViewController.m
+
+=== Internal behavior ===
+
+All the class does is hide the sliding of the entering or exiting toolbar by putting the exiting view controller's toolbar on the application's keyWindow.
+
+When to do it? That's the key. The class is going to keep the exiting view controller's toolbar on top until the entering view controller viewWillAppear: delegate is called. Then it'll simply hide it if it's going up the navigation hierarchy or reset it to its original state if it going down the navigation hierarchy.
+
+=== Usage sample code ===
+
+To make your UIViewController a !StaticToolbarViewController you need to express so:
+{{{
+@interface RolesListViewController : StaticToolbarViewController {
+
+}
+}}}
+
+Then bind the Toolbar on the XIB to the toolbar property and any time you want to push or show a new UIViewController you have to warn !StaticToolbarViewController of it by doing:
+{{{
+RolesListViewController *rolesListViewController = 
+[[RolesListViewController alloc] initWithNibName:@"RolesListViewController"
+                                          bundle:nil];
+	
+[self pushViewController:rolesListViewController];
+[self.navigationController pushViewController:rolesListViewController
+                                     animated:YES];
+	
+[rolesListViewController release];
+}}}
+
+Or if you want to present it modally:
+{{{
+[self pushViewController:roleViewController];
+[self presentModalViewController:navController
+                        animated:YES];
+
+[roleViewController release];
+}}}
+
+*Note:* What's really important is you run {{{[self pushViewController:viewController]}}} before pushing it to the navigationController or present it modally.

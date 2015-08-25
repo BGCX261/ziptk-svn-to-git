@@ -1,0 +1,42 @@
+#summary LabelViewController documentation.
+
+=== Intent ===
+
+To provide with a standard text edition interface.
+
+=== Files involved ===
+
+All under:
+[http://code.google.com/p/ziptk/source/browse/#svn/trunk/src/StandardNavigationControllers/LabelViewController src/StandardNavigationControllers/LabelViewController]
+
+ * !LabelViewController.h
+ * !LabelViewController.m
+ * !LabelViewController.xib
+
+=== Invokation sample code ===
+
+{{{
+LabelViewController *labelViewController =
+[[LabelViewController alloc] initWithText:self.shift.name
+                                  NibName:@"LabelViewController"
+                                   bundle:nil];
+			
+labelViewController.delegate = self;
+[self.navigationController pushViewController:labelViewController
+                                     animated:YES];
+}}}
+
+=== Protocol implementation sample code ===
+
+{{{
+#pragma mark Label delegate methods
+- (void)labelViewController:(LabelViewController *)controller
+             didLabelChange:(NSString *)text {
+
+	self.shift.name = text;
+	[self.table reloadData];
+}
+}}}
+
+=== Screen shots ===
+http://www.zerously.com/Data/zipkt/Documentation/LabelViewController/Images/LabelViewController.png

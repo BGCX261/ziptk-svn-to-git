@@ -1,0 +1,27 @@
+#summary KeychainAES256KeyKeeper documentation.
+
+=== Intent ===
+
+To provide with a single location to get AES256 random key.
+
+The key is generated randomly first and then stored into the Keychain.
+
+=== Files involved ===
+
+All under:
+[http://code.google.com/p/ziptk/source/browse/#svn/trunk/src/Security Security]
+
+ * !KeychainAES256KeyKeeper.h
+ * !KeychainAES256KeyKeeper.m
+
+=== Internal behavior ===
+
+If no key is stored on the AES256 the class generates a new one and stores it, else it returns the stored AES256 key.
+
+=== Usage sample code ===
+
+Just call the Class method:
+{{{
+NSString *key =
+[KeychainAES256KeyKeeper getAES256Key];
+}}}
